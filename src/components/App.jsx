@@ -3,34 +3,45 @@ import Gallery from "./Gallery";
 import axios from "axios";
 import { imageArrayContext } from "./Context";
 import GoTop from "./GoTop";
+
 function App(){
    const [scrollPosition, setSrollPosition] = useState(0);
-   const [ offset , setOffset ] = useState(0);
    const [showGoTop, setshowGoTop] = useState("goTopHidden");
    const refScrollUp = useRef();
+   const { photoArray , setPhotoArray , offset ,setOffset , btnState , setBtnState } = useContext( imageArrayContext );
 
-
-   const { photoArray , setPhotoArray } = useContext( imageArrayContext );
-
+  //btn color change and disable for too many request i.e multiple click logic
+ 
+ const btn = document.getElementById("mybtn1");
+  if(btnState.button){
+    btn?.classList.remove("bg-[#00C4F4]")
+    btn?.classList.add("bg-[#131842]");
+  }
+  else{
+    btn?.classList.remove("bg-[#131842]")
+    btn?.classList.add("bg-[#00C4F4]");
+  }
 
 
    useEffect(()=>{
           // images end 
-
         if(offset>120){
           alert("No more images to display");
+          setBtnState( {loading:false,button:true})
         }
 
         //logic for preventing Redundant call on navigating as useffect fires on re-renders + dependency changes
 
         else if(offset===photoArray.length){
+          
            getImages();
         }
         
   },[offset]);
 
+
+
     async function getImages() {
-      
         try {
           const response = await axios.get('https://api.slingacademy.com/v1/sample-data/photos',{
             params:{
@@ -38,24 +49,30 @@ function App(){
                 'offset': offset,
             }
           });
-          let array0 = [...photoArray];
-          console.log(response,"response");
+          if(response){
+            //respopnse hai to can make another call
+            setBtnState({loading:false,button:false})
+          }
+          const array0 = [...photoArray];
           const array1 =  array0.concat(response.data.photos);
-           
-          console.log("array1",array1);
           setPhotoArray(array1);
          
         } catch (error) {
-          console.error(error);
+          alert(error," We are facing an unprecedented issue Please try again or After some time");
+          //to make another request iin case of error disabled = false
+          setBtnState({loading:false,button:false})
         }
       }
 
+
       function handleMore(){
+
         setOffset(a=> a+20); 
+        setBtnState({loading:true,button:true})
       }
     
-      var scrollPos = window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
 
+      var scrollPos = window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
       const handleVisibleButton = () => {
         const position = window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
         setSrollPosition(position);
@@ -102,10 +119,10 @@ function App(){
 
                 </div>
 
-                <button onClick={handleMore} className="mx-auto flex bg-[#00C4F4] h-[40px] w-[120px] items-center  justify-center rounded my-4 text-white">Load More</button>
+                <button id="mybtn1" onClick={handleMore} disabled={btnState.button} className="mx-auto flex bg-[#00C4F4] h-[40px] w-[120px] items-center  justify-center rounded my-4 text-white">{btnState.loading?"Loading":"Load More"}</button>
                <GoTop showGoTop={showGoTop} scrollUp={handleScrollUp}/>
         </div>
     );
 }
-
+//  {btnState.loading?"Loading":"Load More"}
 export default App;

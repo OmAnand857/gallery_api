@@ -7,20 +7,21 @@ function Photo(){
     const [ item , setItem ] = useState();
     let { imageId } = useParams();
     imageId = Number(imageId);
-    const { photoArray , setPhotoArray } = useContext(imageArrayContext);
-    if(photoArray.length===0){
-        getImages( imageId-1 );
+    const { photoArray , setPhotoArray , offset , setOffset } = useContext(imageArrayContext);
+    if(photoArray.length===0){  
+        getImages( imageId );
+        setOffset(imageId-20); 
     }
     useEffect(()=>{
         const item = photoArray.filter(data=>data.id===imageId);
     setItem(item[0]);
     },[photoArray])
-    async function getImages(offset) {
+    async function getImages(limit) {
         try {
           const response = await axios.get('https://api.slingacademy.com/v1/sample-data/photos',{
             params:{
-                'limit':20,
-                'offset': offset,
+                'limit': limit,
+                'offset': 0,
             }
           });
           let array0 = [...photoArray];

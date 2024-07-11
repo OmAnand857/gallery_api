@@ -9,6 +9,9 @@ function Gallery({url , title , id , description , user ,key }){
     const Navigate = useNavigate();
     function handleClick(){
         Navigate(dynamicUrl);
+    } 
+    function imageErrorHandler(){
+        this.onError=null; this.src='./fallback.png';
     }
 
                 return(
@@ -16,7 +19,7 @@ function Gallery({url , title , id , description , user ,key }){
 
                     <div onClick={handleClick} className="w-[100%]  md:w-[40%] lg:w-[30%] my-4 flex flex-col gap-4 border-[#00C4F4] rounded border-2 text-white ">
                         
-                        <img  loading="lazy" className=" w-full" src={url} onerror="this.onerror=null; this.src='./fallback.png';" alt=""></img>
+                        <img  loading="lazy" className=" w-full" src={url} onError={imageErrorHandler} alt=""></img>
                         <p className="font-bold text-xl px-4">{title}</p>
                         <p className=" px-4">{description}</p>
                         <div className="w-full  px-4 my-2 items-center flex gap-4 ">
