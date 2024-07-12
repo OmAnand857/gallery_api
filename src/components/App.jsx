@@ -3,15 +3,53 @@ import Gallery from "./Gallery";
 import axios from "axios";
 import { imageArrayContext } from "./Context";
 import GoTop from "./GoTop";
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 
 function App(){
    const [scrollPosition, setSrollPosition] = useState(0);
    const [showGoTop, setshowGoTop] = useState("goTopHidden");
    const refScrollUp = useRef();
    const { photoArray , setPhotoArray , offset ,setOffset , btnState , setBtnState } = useContext( imageArrayContext );
+    const animationRef = useRef();
+ 
+//gsap animation
+
+
+useGSAP(()=>{
+  const tl = gsap.timeline();
+  tl.fromTo('.fadeup',{
+    opacity:0,
+    y:40,
+  },{
+      opacity:1,
+      y:0,
+      ease:"power1.inOut",
+      duration:0.75,
+  })
+
+  tl.fromTo('.slidein',{
+    opacity:0,
+    x:80,
+  },{
+      opacity:1,
+      x:0,
+      ease:"elastic.out",
+      duration:0.75,
+  })
+  tl.fromTo('.slideinrev',{
+    opacity:0,
+    x:-80,
+  },{
+      opacity:1,
+      x:0,
+      ease:"elastic.out",
+      duration:0.75,
+  })
+},{scope:animationRef})
 
   //btn color change and disable for too many request i.e multiple click logic
- 
+
  const btn = document.getElementById("mybtn1");
   if(btnState.button){
     btn?.classList.remove("bg-[#00C4F4]")
@@ -58,7 +96,7 @@ function App(){
           setPhotoArray(array1);
          
         } catch (error) {
-          alert(error," We are facing an unprecedented issue Please try again or After some time");
+          alert(error," We are facing an unprecedented issue Please try again after some time");
           //to make another request iin case of error disabled = false
           setBtnState({loading:false,button:false})
         }
@@ -97,12 +135,12 @@ function App(){
         <div class="relative">
             
                 <div  ref={refScrollUp} class="w-full h-[70vh] ">
-                            <div className="w-full h-full flex flex-col gap-4 items-center justify-center">
-                                 <h1 className="capitalize tracking-widest font-bold text-white text-5xl md:text-6xl">
+                            <div ref = {animationRef} className="overflow-hidden w-full h-full flex flex-col gap-4 items-center justify-center">
+                                 <h1 className="fadeup capitalize tracking-widest font-bold text-white text-5xl md:text-6xl">
                                 hi there 👋
                             </h1>
-                            <p className="text-base md:text-xl tracking-wide text-white">Welcome to a captivating experience</p>
-                            <h2 className="capitalize font-semibold  tracking-wide text-[#00C4F4] text-3xl">the gallery</h2>
+                            <p className="slidein text-base md:text-xl tracking-wide text-white">Welcome to a captivating experience</p>
+                            <h2 className="slideinrev capitalize font-semibold  tracking-wide text-[#00C4F4] text-3xl">the gallery</h2>
 
                             </div>
                           

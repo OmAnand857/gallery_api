@@ -10,16 +10,19 @@ function Gallery({url , title , id , description , user ,key }){
     function handleClick(){
         Navigate(dynamicUrl);
     } 
+
+    //when server fails to return images...
     function imageErrorHandler(){
-        this.onError=null; this.src='./fallback.png';
+       
     }
 
                 return(
 
 
                     <div onClick={handleClick} className="w-[100%]  md:w-[40%] lg:w-[30%] my-4 flex flex-col gap-4 border-[#00C4F4] rounded border-2 text-white ">
-                        
-                        <img  loading="lazy" className=" w-full" src={url} onError={imageErrorHandler} alt=""></img>
+                         <object className=" w-full" data={url} type="image/png">
+                        <img  loading="lazy" className=" w-full" src="./fallback.png" alt=""></img>
+                        </object>
                         <p className="font-bold text-xl px-4">{title}</p>
                         <p className=" px-4">{description}</p>
                         <div className="w-full  px-4 my-2 items-center flex gap-4 ">

@@ -39,22 +39,26 @@ function Photo(){
 
     return(
         <>
-        <div class="text-center mt-16 p-4 flex flex-col gap-4">
-          <h1 class="text-white text-5xl">Witness the Beauty</h1>
-          <p class="text-white text-basel">Click/Hover on image to know more</p>
+        <div className="text-center mt-16 p-4 flex flex-col gap-4">
+          <h1 className="text-white text-5xl">Witness the Beauty</h1>
+          <p className="text-white text-basel">Click/Hover on image to know more</p>
         </div>
-        <div class="group relative  mt-[50px] w-[90vw] md:w-[70vw]  lg:w-[50vw]  overflow-hidden  flex mx-auto  lg:h-[60vh]">
-        <img class=" object-cover w-full h-full" src={item?.url} alt="random-image" />
+        <div className="group relative  mt-[50px] w-[90vw] md:w-[70vw]  lg:w-[50vw]  overflow-hidden  flex mx-auto  lg:h-[60vh]">
+       
+        <object className="object-cover w-full h-full" data={item?.url} type="image/png">
+        <img className=" object-cover w-full h-full" src="./fallback.png" alt="random-image" />
+        </object>
+        
         <div
-            class="absolute bottom-0 left-0 w-full h-0 flex flex-col justify-center items-center bg-[rgba(0,0,0,0.5)] opacity-0 group-hover:h-full group-hover:opacity-100 duration-500">
-            <h1 class="text-2xl p-4   text-center text-white">{item?.title}</h1>
-        <p class="mt-5 p-4   text-white text-center duration-300">{item?.description}</p>
-        <small class="  text-white">id:{item?.id}</small>
-        <small class="  text-white">user:{item?.user}</small>
+            className="absolute bottom-0 left-0 w-full h-0 flex flex-col justify-center items-center bg-[rgba(0,0,0,0.5)] opacity-0 group-hover:h-full group-hover:opacity-100 duration-500">
+            <h1 className="text-2xl p-4   text-center text-white">{item?.title}</h1>
+        <p className="mt-5 p-4   text-white text-center duration-300">{item?.description}</p>
+        <small className="  text-white">id:{item?.id}</small>
+        <small className="  text-white">user:{item?.user}</small>
         </div>
     </div>
 
-    <div class="fixed bottom-4 left-[50vw] translate-x-[-50%] flex mx-auto"><h2 class="text-center text-sm mt-2 text-white">Made with ❤️ by <span class="text-blue-400">Om Anand</span></h2></div>
+    <div className="fixed bottom-4 left-[50vw] translate-x-[-50%] flex mx-auto"><h2 className="text-center text-sm mt-2 text-white">Made with ❤️ by <span className="text-blue-400">Om Anand</span></h2></div>
 
       </>
 
